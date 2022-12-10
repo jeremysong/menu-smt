@@ -1,6 +1,9 @@
 <!doctype html>
+
 <head>
     <title>SMT Menu Generator</title>
+    <link href="https://cdn.jsdelivr.net/npm/@coreui/coreui@4.2.0/dist/css/coreui.min.css" rel="stylesheet"
+        integrity="sha384-UkVD+zxJKGsZP3s/JuRzapi4dQrDDuEf/kHphzg8P3v8wuQ6m9RLjTkPGeFcglQU" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script type="text/javascript">
         function submit() {
@@ -17,15 +20,19 @@
                     'max_count': $('#max_count').val(),
                     'min_count': $('#min_count').val()
                 }),
-                success: function(data) {
+                success: function (data) {
+                    $("#dishes").empty();
                     if (data['sat']) {
-                        $("#result").text(JSON.stringify(data['menu']));
+                        $("#result").text("Suggested Menu");
+                        data['menu'].forEach((dish, index) => {
+                            $("#dishes").append('<tr><td>' + dish + '</td></tr>');
+                        });
                     } else {
                         $("#result").text("Cannot generate such menu");
                     }
                 },
 
-                error: function(error) {
+                error: function (error) {
                     var error = JSON.stringify(error);
                     console.log(`Error ${error}`);
                 }
@@ -33,21 +40,28 @@
         }
     </script>
 </head>
+
 <body>
 
-    <label for="max_price">Max Price</label>
-    <input type="number" id="max_price" name="max_price" value="50"><br>
-    <label for="min_price">Min Price</label>
-    <input type="number" id="min_price" name="min_price" value="20"><br>
+    <div class="container">
+        <label for="max_price">Max Price</label>
+        <input type="number" id="max_price" name="max_price" value="50"><br>
+        <label for="min_price">Min Price</label>
+        <input type="number" id="min_price" name="min_price" value="20"><br>
 
-    <label for="max_count">Max Count</label>
-    <input type="number" id="max_count" name="max_count" value="10"><br>
-    <label for="min_count">Min Count</label>
-    <input type="number" id="min_count" name="min_count" value="2"><br>
+        <label for="max_count">Max Count</label>
+        <input type="number" id="max_count" name="max_count" value="10"><br>
+        <label for="min_count">Min Count</label>
+        <input type="number" id="min_count" name="min_count" value="2"><br>
 
-    </p>
-    <button onclick="submit()">Submit</button>
+        <br>
+        <button class="btn btn-primary" onclick="submit()">Submit</button>
+        <br>
+        <h2 id="result"></h2>
 
-    </p>
-    <label id="result"></label>
+        <table class="table table-striped">
+            <tbody id="dishes">
+            </tbody>
+        </table>
+    </div>
 </body>
