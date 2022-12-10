@@ -40,11 +40,8 @@ def create_app(test_config=None):
         print("data", data)
         s = menu_solver.MenuSolver().solve(max_price=data['max_price'], min_price=data['min_price'],
             max_count=data['max_count'], min_count=data['min_count'])
-        
-        # print(s.check())
 
         if (s.check() == sat):
-            # process_model(s.model())
             response = json.dumps({
                 'sat': True,
                 'menu': process_model(s.model())
