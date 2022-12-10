@@ -1,0 +1,53 @@
+<!doctype html>
+<head>
+    <title>SMT Menu Generator</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        function submit() {
+            $.ajax({
+                url: '/solve',
+                type: 'post',
+                // contentType: 'application/json; charset=utf-8',
+                // dataType: "json",
+                contentType: 'application/json;charset=UTF-8',
+                dataType: 'json',
+                data: JSON.stringify({
+                    'max_price': $('#max_price').val(),
+                    'min_price': $('#min_price').val(),
+                    'max_count': $('#max_count').val(),
+                    'min_count': $('#min_count').val()
+                }),
+                success: function(data) {
+                    if (data['sat']) {
+                        $("#result").text(JSON.stringify(data['menu']));
+                    } else {
+                        $("#result").text("Cannot generate such menu");
+                    }
+                },
+
+                error: function(error) {
+                    var error = JSON.stringify(error);
+                    console.log(`Error ${error}`);
+                }
+            })
+        }
+    </script>
+</head>
+<body>
+
+    <label for="max_price">Max Price</label>
+    <input type="number" id="max_price" name="max_price" value="50"><br>
+    <label for="min_price">Min Price</label>
+    <input type="number" id="min_price" name="min_price" value="20"><br>
+
+    <label for="max_count">Max Count</label>
+    <input type="number" id="max_count" name="max_count" value="10"><br>
+    <label for="min_count">Min Count</label>
+    <input type="number" id="min_count" name="min_count" value="2"><br>
+
+    </p>
+    <button onclick="submit()">Submit</button>
+
+    </p>
+    <label id="result"></label>
+</body>
